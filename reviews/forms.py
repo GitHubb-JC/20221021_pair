@@ -1,0 +1,14 @@
+from socket import fromshare
+from django import forms
+from .models import Review
+
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        field = [
+            "movie_name",
+            "title",
+            "content",
+            "grade",
+        ]
