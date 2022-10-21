@@ -1,6 +1,5 @@
-from socket import fromshare
 from django import forms
-from .models import Review
+from .models import Review, Comment
 
 
 class ReviewForm(forms.ModelForm):
@@ -11,4 +10,12 @@ class ReviewForm(forms.ModelForm):
             "title",
             "content",
             "grade",
+        ]
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = [
+            "content",
         ]
