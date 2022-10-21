@@ -4,6 +4,23 @@
 {% bootstrap_javascript %}
 {% block content %}
 
+<p>{{ review.user.username }}</p>
+<p>{{ review.title }}</p>
+<p>{{ review.content }}</p>
+<p>{{ review.movie_name }}</p>
+<p>{{ review.grade }}</p>
+<p>{{ review.created_at }}</p>
+<p>{{ review.updated_at }}</p>
+
+{% if request.user == review.user %}
+<form action="{% url 'reviews:update' review.pk %}" method="POST">
+  <input type='submit' value='수정하기'>
+</form>
+<form action="{% url 'reviews:delete' review.pk %}" method="POST">
+  <input type='submit' value='삭제하기'>
+</form>
+{% endif %}
+
 {% if request.user.is_authenticated %} 
 <form action = "" method="POST">
   {% csrf_token %} 
