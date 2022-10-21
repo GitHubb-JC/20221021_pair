@@ -40,3 +40,21 @@ def detail(request, review_pk):
     }
 
     return render(request, "reviews/detail.html", context)
+
+@ login_required
+def update(request, review_pk):
+    review = Review.objects.get(pk=review_pk)
+    if request.user == review.user:
+        if request.method == "POST":
+            review_form = ReviewForm(request.POST, instance=review)
+            if review_form.is_valid():
+                review_form.save()
+                return redirect('reviews:detail', review_pk)
+        else:
+            review_form = ReviewForm(instance=review)
+    else:
+        return redirect('reviews:index')
+    context = {'review_form' : review_form}
+    return render(request, 'reviews/update.html', context)
+
+        
