@@ -5,7 +5,7 @@
 {% block content %}
   <h1>리뷰 목록</h1>
   {% if request.user.is_authenticated %}
-    <a class="btn btn-primary my-3 float-right" href="{% url 'reviews:create' request.user.pk %}">글 쓰기</a>
+    <a class="btn btn-primary my-3 float-right" href="{% url 'reviews:create' %}">글 쓰기</a>
   {% endif %}
 
   <div class="row">
