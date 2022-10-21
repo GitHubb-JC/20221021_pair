@@ -3,6 +3,12 @@ from .models import Review, Comment
 from .forms import ReviewForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.shortcuts import render, redirect
+from reviews.forms import ReviewForm
+from reviews.models import Review
+from django.db.models import Q
+from urllib.parse import urlparse
+from urllib.request import urlopen
 
 # Create your views here.
 def index(request):
@@ -54,7 +60,7 @@ def update(request, review_pk):
         else:
             review_form = ReviewForm(instance=review)
     else:
-        return redirect('reviews:index')
+        return redirect("reviews:index")
     context = {"review_form": review_form}
     return render(request, "reviews/update.html", context)
 
@@ -91,3 +97,22 @@ def comment_delete(request, review_pk, comment_pk):
             comment.delete()
             return redirect("reviews:detail", review_pk)
     return redirect("reviews:detail", review_pk)
+
+
+def search(request):
+    all_data = Review.objects.order_by("-pk")
+    search = request.GET.get("search", "")
+    if search:
+        search_list = all_data.filter(
+            Q(title__icontains=search) | Q(movie_name__icontains=search)
+        )
+
+        context = {
+            "search_list": search_list,
+        }
+    else:
+        context = {
+            "search_list": all_data,
+        }
+
+    return render(request, "reviews/search.html", context)
