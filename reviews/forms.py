@@ -1,3 +1,4 @@
+from tkinter import Widget
 from django import forms
 from .models import Review, Comment
 
@@ -20,3 +21,9 @@ class CommentForm(forms.ModelForm):
         fields = [
             "content",
         ]
+        widgets = {
+            "content": forms.Textarea(attrs={"class": "from-control", "rows": 1}),
+        }
+        labels = {
+            "content": "댓글",
+        }
