@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Review
+from .models import Review, Comment
 from .forms import ReviewForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -80,3 +80,14 @@ def comment_create(request, review_pk):
             comment.user = request.user
             comment.save()
             return redirect("reviews:detail", review.pk)
+    return redirect("reviews:detail", review.pk)
+
+
+@login_required
+def comment_delete(request, review_pk, comment_pk):
+    comment = Comment.objects.get(pk=comment_pk)
+    if comment.user == request.user:
+        if request.method == "POST":
+            comment.delete()
+            return redirect("reviews:detail", review_pk)
+    return redirect("reviews:detail", review_pk)
